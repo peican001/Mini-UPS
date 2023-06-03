@@ -1,0 +1,45 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.12-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	// id 'org.springframework.boot' version '2.5.5'
+    // id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "com.google.protobuf" version '0.8.12'
+}
+afterEvaluate {
+	tasks.processResources.dependsOn tasks.generateProto
+}
+
+
+group = 'edu.duke.ece568'
+version = '0.0.1-SNAPSHOT'
+//sourceCompatibility = '17'
+sourceCompatibility = "11"
+targetCompatibility = "11"
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+protobuf {
+	generatedFilesBaseDir = "$projectDir/src"
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'com.google.protobuf:protobuf-java:3.22.3'
+	implementation 'com.sun.mail:javax.mail:1.6.2'
+	runtimeOnly 'org.postgresql:postgresql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
