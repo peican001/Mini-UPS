@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>User Profile</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+  <!-- Add necessary CSS and JS imports here -->
+</head>
+<body>
+<!-- Add navigation bar here -->
+
+<h1>User Profile</h1>
+<h2>Account Information</h2>
+<p>UpsID: <span th:text="${user.upsID}"></span></p>
+<p>Email: <span th:text="${user.email}"></span></p>
+
+
+<a href="/changePassword">Change Password</a><br>
+
+<a class="btn btn-secondary" th:href="@{/main}">Back to main page</a>
+
+
+</body>
+</html>

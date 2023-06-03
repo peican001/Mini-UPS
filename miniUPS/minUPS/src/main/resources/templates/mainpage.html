@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+
+
+    <style>
+        #logo {
+            background: #ffb710;
+            border-radius: 7px;
+            width: 100%;
+            color: white;
+            padding: 5px;
+            font-size: xxx-large;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .music-toggle-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            color: #000; /* Change the color of the musical note icon */
+        }
+    </style>
+
+
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Main Page</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" th:if="${#authentication == null or #authentication.principal == 'anonymousUser'}">
+                    <a class="nav-link" th:href="@{/register}">Register</a>
+                </li>
+                <li class="nav-item" th:if="${#authentication == null or #authentication.principal == 'anonymousUser'}">
+                    <a class="nav-link" th:href="@{/login}">Log in</a>
+                </li>
+                <li class="nav-item" th:if="${#authentication != null and #authentication.principal != 'anonymousUser'}">
+                    <form th:action="@{/logout}" method="post" id="logoutForm" class="form-inline my-2 my-lg-0">
+                        <span>Welcome, <span th:text="${#authentication.principal.username}"></span></span>
+                        <input class="btn btn-outline-success my-2 my-sm-0 ml-2" type="submit" value="Log out"/>
+                    </form>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link" href="/userProfile">User Profile</a>
+                </li>
+
+                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link" href="/userPackages">Check Your Packages</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="wrap">
+        <label id="logo">UPS</label>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <form th:action="@{/searchPackage}" method="get">
+        <div class="form-group">
+            <label for="packageId">Search Tracking number:</label>
+            <input type="number" class="form-control" id="packageId" name="packageId" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<audio id="myAudio">
+    <source src="audio/background-music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<!-- Add these elements to show the playback state to the user -->
+<button class="music-toggle-btn" id="music-toggle" onclick="toggleAudio()">
+    <i class="fas fa-music"></i>
+</button>
+
+<script>
+
+
+    var myAudio = document.getElementById("myAudio");
+    var loading = document.getElementById("loading");
+    var playing = document.getElementById("playing");
+    var paused = document.getElementById("paused");
+
+    function showLoading() {
+        loading.style.display = "block";
+        playing.style.display = "none";
+        paused.style.display = "none";
+    }
+
+    function showPlaying() {
+        loading.style.display = "none";
+        playing.style.display = "block";
+        paused.style.display = "none";
+    }
+
+    function showPaused() {
+        loading.style.display = "none";
+        playing.style.display = "none";
+        paused.style.display = "block";
+    }
+
+    var myAudio = document.getElementById("myAudio");
+    var musicToggleBtn = document.getElementById("music-toggle");
+
+    function toggleAudio() {
+        if (myAudio.paused) {
+            playAudio();
+        } else {
+            pauseAudio();
+        }
+    }
+
+    function playAudio() {
+        var playPromise = myAudio.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                // Automatic playback started!
+                // Change the button icon to pause.
+                musicToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            })
+                .catch(error => {
+                    // Auto-play was prevented
+                });
+        }
+    }
+
+    function pauseAudio() {
+        myAudio.pause();
+        // Change the button icon to play.
+        musicToggleBtn.innerHTML = '<i class="fas fa-music"></i>';
+    }
+</script>
+
+</body>
+</html>

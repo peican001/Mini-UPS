@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Package Information</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
+</head>
+<body>
+<div class="container">
+  <h1>Package Information</h1>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Tracking number</th>
+      <th>Details</th>
+      <th>Destination</th>
+      <th>Status</th>
+      <th>Location</th>
+      <th>Distance</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td th:text="${foundPackage.packageID}"></td>
+      <td th:text="${foundPackage.details}"></td>
+      <td th:text="(${foundPackage.destinationX} + ', ' + ${foundPackage.destinationY})"></td>
+      <td th:text="${foundPackage.status}"></td>
+      <td th:text="${location}"></td>
+      <td th:text="${distance}"></td>
+    </tr>
+    </tbody>
+  </table>
+  <a class="btn btn-secondary" th:href="@{/main}">Back to main page</a>
+</div>
+</body>
+</html>

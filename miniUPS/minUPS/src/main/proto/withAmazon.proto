@@ -1,0 +1,56 @@
+syntax = "proto2";
+
+package tutorial;
+
+option java_package = "edu.duke.ece568.minUPS.protocol.UPStoAmazon";
+//option java_outer_classname = "AmazonMessage";
+option java_multiple_files = true;
+option optimize_for = CODE_SIZE;
+
+message AInformWorld{
+  required int64 worldid = 1;
+}
+
+message UReceivedWorld{
+  required int64 worldid = 1;
+}
+
+message ABookTruck {
+  required int64 packageid = 1;
+  required int32 warehouseid = 2;
+  required int32 warehousex = 3;
+  required int32 warehousey = 4;
+  required int32 destinationx = 5;
+  required int32 destinationy = 6;
+  optional string upsid = 7;
+  optional int64 seqnum = 8;
+  optional string detail = 9;
+}
+
+message UTruckArrived{
+  required int64 packageid = 1;
+  required int32 truckid = 2;
+  optional int64 seqnum = 3;
+}
+
+message AStartDeliver {
+  required int64 packageid = 1;
+  optional int64 seqnum = 2;
+}
+
+message UDelivered{
+  required int64 packageid = 1;
+  optional int64 seqnum = 2;
+}
+
+message AUCommunication{
+  repeated ABookTruck bookings = 1;
+  repeated AStartDeliver delivers = 2;
+  optional int64 acks = 3;
+}
+
+message UACommunication{
+  repeated UTruckArrived arrived = 1;
+  repeated UDelivered delivered = 2;
+  optional int64 acks = 3;
+}
